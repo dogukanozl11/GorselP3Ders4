@@ -14,20 +14,10 @@ namespace GorselP3Ders4
     internal class Class1
     {
         SqlConnection bag = new SqlConnection("Data Source=DESKTOP-MJGGV3B;Initial Catalog=anket;Integrated Security=True;Encrypt=False;");
-        public void cbyukle(ComboBox cb )
+        public void grafikciz()
         {
-            //combobox a vt den kayıtları yükleyen kodu yazınız
-            string sql = "select * from sorular";
-            SqlDataAdapter da = new SqlDataAdapter(sql, bag);
-            DataTable dt = new DataTable();
-            da.Fill(dt);
-            cb.DataSource = dt;
-            cb.DisplayMember = "soru";
-            cb.ValueMember = "soruno";
-        }
-        public void lboxayukle(ComboBox cb1 , ListBox listb)
-        {
-
+            string sql = "select sum(oy) from cevaplar where soruno=@prm1";
+            SqlDataAdapter da = new SqlDataAdapter(sql,bag);
         }
     }
 }

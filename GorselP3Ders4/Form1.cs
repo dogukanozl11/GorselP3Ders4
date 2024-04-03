@@ -20,10 +20,16 @@ namespace GorselP3Ders4
         SqlConnection bag = new SqlConnection("Data Source=DESKTOP-MJGGV3B;Initial Catalog=anket;Integrated Security=True;Encrypt=False;");
         private void Form1_Load(object sender, EventArgs e)
         {
-           Class1 cls = new Class1();
-            cls.cbyukle();
+            //combobox a vt den kayıtları yükleyen kodu yazınız
+            string sql = "select * from sorular";
+            SqlDataAdapter da = new SqlDataAdapter(sql, bag);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            comboBox1.DataSource = dt;
+            comboBox1.DisplayMember = "soru";
+            comboBox1.ValueMember = "soruno";
         }
-       
+
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
