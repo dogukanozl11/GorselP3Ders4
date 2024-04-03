@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace GorselP3Ders4
 {
@@ -57,6 +58,8 @@ namespace GorselP3Ders4
                 bag.Close();
 
                 MessageBox.Show("Oyunuz Alınmıştır.");
+
+                grafikciz();
             }
             catch
             {
@@ -64,6 +67,31 @@ namespace GorselP3Ders4
             }
 
 
+        }
+        public void grafikciz()
+        {
+            //combobox da seçili elemanın tablodaki kayıtlarını toplayan ve bir değişkene atayan kodu yazınız.
+
+            string sql = "select sum(oy) from cevaplar where soruno=@prm1";
+            SqlDataAdapter da = new SqlDataAdapter(sql, bag);
+            da.SelectCommand.Parameters.AddWithValue("@prm1", comboBox1.SelectedValue);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            int toplamoy = Convert.ToInt32(dt.Rows[0][0]);
+
+            //vt daki kayıtları chartta gösteren (grafiğini çizen) kodu yazınız.
+
+            string sql1 = "select cevap , oy , (oy*100/@prm3) as yuzde from cevaplar where soruno =@prm2";
+            SqlDataAdapter da1 = new SqlDataAdapter(sql1,bag);
+            da1.SelectCommand.Parameters.AddWithValue("@prm2", comboBox1.SelectedValue);
+            da1.SelectCommand.Parameters.AddWithValue("@prm3", toplamoy);
+            DataTable dt1 = new DataTable();
+            da1.Fill(dt1);
+            chart1.DataSource = dt1;
+            chart1.Series[0].XValueMember = "cevap";
+            chart1.Series[0].YValueMembers = "yuzde";
+            chart1.DataBind();
+            chart1.Series[0].ChartType = SeriesChartType.Pyramid;
         }
     }
 }
